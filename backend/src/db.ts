@@ -1,13 +1,12 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
-
-dotenv.config();
-
-const MONGODB_URL = process.env.MONGODB_URL as string;
-
-mongoose.connect(MONGODB_URL);
+mongoose.connect(
+  "mongodb+srv://admin:tBiLoEWFPhxpVhZI@cluster0.mvkomnu.mongodb.net/preudo-brain",
+);
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, require: true, unique: true },
-  password: { type: String, require: true },
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  name: { type: String, required: true },
 });
+
+export const User = mongoose.model("User", userSchema);
