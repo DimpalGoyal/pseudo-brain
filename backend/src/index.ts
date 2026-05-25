@@ -102,7 +102,16 @@ app.get("/api/v1/content", userMiddleware, async (req, res) => {
   }).populate("userId", "username");
   res.json({ content });
 });
-app.delete("/api/v1/content", (req, res) => {});
+
+app.delete("/api/v1/content", userMiddleware, async(req, res) => {
+  const contentId = req.body.contentId;
+  await ContentModel.deleteMany({
+    contentId,
+    //@ts-ignore
+    userId: req.userId,
+  })
+  res.json({message: "content deleted"})
+});
 
 app.post("/api/v1/brain/share", (req, res) => {});
 app.get("/api/v1/brain/:share", (req, res) => {});
