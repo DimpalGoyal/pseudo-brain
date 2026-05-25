@@ -1,6 +1,9 @@
 import express from "express";
 import z from "zod";
+import jwt from "jsonwebtoken";
 import { User } from "./db";
+import { secret } from "./config";
+import bcrypt from "bcrypt";
 
 const app = express();
 app.use(express.json());
@@ -11,37 +14,76 @@ const signupBody = z.object({
   name: z.string(),
 });
 
-app.post("/api/vi/signup", async (req, res) => {
+app.post("/api/v1/signup", async (req, res) => {
   const { success } = signupBody.safeParse(req.body);
   if (!success) {
-    return res.status(411).json({ message: "invalid inputs" });
+    return res.status(400).json({ message: "invalid inputs" });
   }
 
-  const existingUser = await User.findOne({
-    username: req.body.username,
-  });
+  try {
+    const existingUser = await User.findOne({
+      username: req.body.username,
+    });
 
-  if (existingUser) {
-    return res.status(411).json({ message: "user already exist" });
+    if (existingUser) {
+      return res.status(409).json({ message: "user already exist" });
+    }
+
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const user = await User.create({
+      username: req.body.username,
+      password: hashedPassword,
+      name: req.body.name,
+    });
+
+    const userId = user._id;
+    const token = jwt.sign({ userId }, secret);
+    res.status(201).json({ message: "user created", token: token });
+  } catch (err) {
+    return res.status(500).json({ message: "internal server error" });
   }
-
-  const user = await User.create({
-    username: req.body.username,
-    password: req.body.password,
-    name: req.body.name,
-  });
-
-  const userId = user._id;
-  res.json({ message: "user signed up", userid: userId });
 });
-app.post("api/vi/signin", (req, res) => {});
 
-app.post("api/vi/content", (req, res) => {});
-app.delete("api/vi/content", (req, res) => {});
-app.get("api/vi/content", (req, res) => {});
+const signinBody = z.object({
+  username: z.string().email(),
+  password: z.string(),
+});
+app.post("/api/v1/signin", async (req, res) => {
+  const { success } = signinBody.safeParse(req.body);
+  if (!success) {
+    return res.status(400).json({ message: "invalid inputs" });
+  }
+  try {
+    const existingUser = await User.findOne({
+      username: req.body.username,
+    });
 
-app.post("api/vi/brain/share", (req, res) => {});
-app.get("api/vi/brain/:share", (req, res) => {});
+    if (!existingUser) {
+      return res.status(401).json({ message: "invalid credentials" });
+    }
+
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      existingUser.password,
+    );
+
+    if (!validPassword) {
+      return res.status(401).json({ message: "invalid credentials" });
+    }
+
+    const token = jwt.sign({ userId: existingUser._id }, secret);
+    return res.json({ token: token });
+  } catch (err) {
+    return res.status(500).json({ message: "internal server error" });
+  }
+});
+
+app.post("/api/v1/content", (req, res) => {});
+app.delete("/api/v1/content", (req, res) => {});
+app.get("/api/v1/content", (req, res) => {});
+
+app.post("/api/v1/brain/share", (req, res) => {});
+app.get("/api/v1/brain/:share", (req, res) => {});
 
 app.listen(3000, () => {
   console.log("server running");
