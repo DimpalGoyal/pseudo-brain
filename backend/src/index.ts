@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { User } from "./db";
 import { secret } from "./config";
 import bcrypt from "bcrypt";
+import { userMiddleware } from "./middleware";
 
 const app = express();
 app.use(express.json());
@@ -78,7 +79,11 @@ app.post("/api/v1/signin", async (req, res) => {
   }
 });
 
-app.post("/api/v1/content", (req, res) => {});
+app.post("/api/v1/content", userMiddleware,  (req, res) => {
+  const link = req.body.link
+  const tag = req.body.tag
+});
+
 app.delete("/api/v1/content", (req, res) => {});
 app.get("/api/v1/content", (req, res) => {});
 

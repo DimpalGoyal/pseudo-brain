@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { required } from "zod/mini";
 mongoose.connect(
   "mongodb+srv://admin:tBiLoEWFPhxpVhZI@cluster0.mvkomnu.mongodb.net/preudo-brain",
 );
@@ -10,3 +11,12 @@ const userSchema = new mongoose.Schema({
 });
 
 export const User = mongoose.model("User", userSchema);
+
+const contentSchema = new mongoose.Schema({
+  title: String,
+  link: String,
+  tags: [{type: mongoose.Types.ObjectId, ref:'Tag'}],
+  userId: {type: mongoose.Types.ObjectId, ref: 'User', required: true}
+})
+
+export const ContentModel = mongoose.model("Content", contentSchema)
