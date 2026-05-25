@@ -11,7 +11,7 @@ export const userMiddleware = (
   const decoded = jwt.verify(header as string, secret);
   if (decoded) {
     //@ts-ignore
-    req.userId = decoded.id;
+    req.userId = decoded.userId;
     next();
   } else {
     res.status(403).json({ message: "user is not logged in" });

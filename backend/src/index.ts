@@ -1,10 +1,11 @@
 import express from "express";
 import z from "zod";
 import jwt from "jsonwebtoken";
-import { User } from "./db";
+import { ContentModel, User } from "./db";
 import { secret } from "./config";
 import bcrypt from "bcrypt";
 import { userMiddleware } from "./middleware";
+import { textSpanIntersection } from "typescript";
 
 const app = express();
 app.use(express.json());
@@ -79,13 +80,29 @@ app.post("/api/v1/signin", async (req, res) => {
   }
 });
 
-app.post("/api/v1/content", userMiddleware,  (req, res) => {
-  const link = req.body.link
-  const tag = req.body.tag
+app.post("/api/v1/content", userMiddleware, async (req, res) => {
+  const link = req.body.link;
+  const title = req.body.title;
+  const tag = req.body.tag;
+  await ContentModel.create({
+    title,
+    link,
+    // @ts-ignore
+    userId: req.userId,
+    tags: [],
+  });
+  res.json({ message: "content added" });
 });
 
+app.get("/api/v1/content", userMiddleware, async (req, res) => {
+  //@ts-ignore
+  const userId = req.userId;
+  const content = await ContentModel.find({
+    userId: userId,
+  }).populate("userId", "username");
+  res.json({ content });
+});
 app.delete("/api/v1/content", (req, res) => {});
-app.get("/api/v1/content", (req, res) => {});
 
 app.post("/api/v1/brain/share", (req, res) => {});
 app.get("/api/v1/brain/:share", (req, res) => {});
