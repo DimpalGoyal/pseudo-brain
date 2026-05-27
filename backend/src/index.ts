@@ -113,8 +113,12 @@ app.delete("/api/v1/content", userMiddleware, async(req, res) => {
   res.json({message: "content deleted"})
 });
 
-app.post("/api/v1/brain/share", (req, res) => {});
+app.post("/api/v1/brain/share",  userMiddleware,async(req, res) => {
+
+});
+
 app.get("/api/v1/brain/:share", (req, res) => {});
+
 
 app.listen(3000, () => {
   console.log("server running");
