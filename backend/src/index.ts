@@ -1,11 +1,12 @@
 import express from "express";
 import z from "zod";
 import jwt from "jsonwebtoken";
-import { ContentModel, User } from "./db";
+import { ContentModel, LinkModel, User } from "./db";
 import { secret } from "./config";
 import bcrypt from "bcrypt";
 import { userMiddleware } from "./middleware";
 import { textSpanIntersection } from "typescript";
+import { random } from "./utils";
 
 const app = express();
 app.use(express.json());
@@ -103,22 +104,52 @@ app.get("/api/v1/content", userMiddleware, async (req, res) => {
   res.json({ content });
 });
 
-app.delete("/api/v1/content", userMiddleware, async(req, res) => {
+app.delete("/api/v1/content", userMiddleware, async (req, res) => {
   const contentId = req.body.contentId;
   await ContentModel.deleteMany({
     contentId,
     //@ts-ignore
     userId: req.userId,
-  })
-  res.json({message: "content deleted"})
+  });
+  res.json({ message: "content deleted" });
 });
 
-app.post("/api/v1/brain/share",  userMiddleware,async(req, res) => {
+app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
+  const share = req.body.share;
+  if (share) {
+    const existingLink = await LinkModel.findOne({
+      //@ts-ignore
+      userId: req.userId,
+    });
+    if (existingLink) {
+      res.json({
+        hash: existingLink.hash,
+      });
+      return;
+    }
+    const hash = random(10);
+    await LinkModel.create({
+      //@ts-ignore
+      userId: req.userId,
+      hash: hash,
+    });
 
+    res.json({
+      hash,
+    });
+  } else {
+    await LinkModel.deleteOne({
+      //@ts-ignore
+      userId: req.userId,
+    });
+
+    res.json({
+      message: "removed link",
+    });
+  }
 });
 
 app.get("/api/v1/brain/:share", (req, res) => {});
-
 
 app.listen(3000, () => {
   console.log("server running");
