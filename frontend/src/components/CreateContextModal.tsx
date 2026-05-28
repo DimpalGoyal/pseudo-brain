@@ -1,5 +1,6 @@
 import { CrossIcon } from "../icons/CrossIcon";
 import { Button } from "./Button";
+import { InputBox } from "./InputBox";
 
 interface modalProps {
   title: string;
@@ -34,22 +35,6 @@ export function CreateContextModal({ title, open, onClose }: modalProps) {
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-interface inputProps {
-  placeholder: string;
-}
-
-function InputBox({ placeholder }: inputProps) {
-  return (
-    <div>
-      <input
-        type="text"
-        placeholder={placeholder}
-        className="px-4 py-2 m-2 border rounded"
-      />
     </div>
   );
 }
