@@ -5,11 +5,13 @@ import { ContentModel, LinkModel, User } from "./db";
 import { secret } from "./config";
 import bcrypt from "bcrypt";
 import { userMiddleware } from "./middleware";
-import { textSpanIntersection } from "typescript";
 import { random } from "./utils";
+import cors from "cors"
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+
 
 const signupBody = z.object({
   username: z.string().email(),
