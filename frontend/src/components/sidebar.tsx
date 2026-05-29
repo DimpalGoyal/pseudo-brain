@@ -7,7 +7,7 @@ export function Sidebar() {
   return (
     <div className="left-0 top-0 fixed bg-white h-screen w-70 border-r">
       <div className="flex items-center gap-3 ml-1">
-        <div className="ml-4 mt-4">
+        <div className="ml-8 mt-4">
         <Logo/>
         </div>
         <div className="pt-4 text-3xl flex font-semibold font-mono">

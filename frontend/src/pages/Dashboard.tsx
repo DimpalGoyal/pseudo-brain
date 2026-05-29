@@ -5,16 +5,18 @@ import { CreateContextModal } from "../components/CreateContextModal";
 import { ShareIcon } from "../icons/PlusIcon";
 import { PlusIcon } from "../icons/ShareIcon";
 import { Sidebar } from "../components/sidebar";
+import { useContents } from "../hooks/useContents";
 
 export function Dashboard() {
   const [openModal, setOpenModal] = useState(false);
+  const content = useContents();
   return (
     <>
       <div>
         <Sidebar />
       </div>
       <div className="bg-gray-100 h-screen">
-        <div className="ml-72 p-15">
+        <div className="ml-62 p-15">
           <CreateContextModal
             title="add content"
             open={openModal}
@@ -37,17 +39,10 @@ export function Dashboard() {
               startIcon={<ShareIcon />}
             />
           </div>
-          <div className="pt-4 flex gap-4">
-            <Card
-              title="ai demo"
-              link="https://www.youtube.com/watch?v=wrH66MOWqGM"
-              type="youtube"
-            />
-            <Card
-              title="ai demo"
-              link="https://twitter.com/x/status/807811447862468608"
-              type="twitter"
-            />
+          <div className="pt-4 gap-4 grid grid-cols-4">
+            {content.map(({ title, type, link }) => (
+              <Card title={title} link={link} type={type} />
+            ))}
           </div>
         </div>
       </div>
