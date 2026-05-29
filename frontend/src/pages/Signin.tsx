@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_URL } from "../config";
+import { ButtonAlert } from "../components/ButtonAlert";
 
 export function Signin() {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -30,6 +31,9 @@ export function Signin() {
         </div>
         <div className="pt-5 flex justify-center">
           <Button variant="primary" text="sign in" onClick={signin} />
+        </div>
+        <div className="mt-5 font-semibold">
+          <ButtonAlert to="/signup" title=" signup" text="don't have an account? " />
         </div>
       </div>
     </div>
