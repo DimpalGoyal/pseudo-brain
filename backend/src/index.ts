@@ -173,14 +173,14 @@ app.get("/api/v1/brain/:shareLink", async (req, res) => {
   });
 
   if (!user) {
-    res.status(411).json({
+    res.status(404).json({
       message: "user not found",
     });
     return;
   }
 
   res.json({
-    username: user.username,
+    username: user.name,
     content: content,
   });
 });
