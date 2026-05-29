@@ -9,7 +9,7 @@ interface cardProps {
 export function Card({ title, link, type }: cardProps) {
   return (
     <div>
-      <div className="p-6 border  shadow-md max-w-72 rounded-md bg-white">
+      <div className="p-6 border  shadow-md max-w-70 rounded-md bg-white">
         <div className="flex items-center justify-between ">
           <div className="flex items-center">
             <div className="pr-2">

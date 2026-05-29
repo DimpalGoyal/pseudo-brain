@@ -40,6 +40,7 @@ export function CreateContextModal({ title, open, onClose }: modalProps) {
         },
       },
     );
+    onClose()
   }
 
   return (

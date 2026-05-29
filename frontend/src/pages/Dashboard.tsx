@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../components/Button";
 import { Card } from "../components/Card";
 import { CreateContextModal } from "../components/CreateContextModal";
@@ -9,14 +9,19 @@ import { useContents } from "../hooks/useContents";
 
 export function Dashboard() {
   const [openModal, setOpenModal] = useState(false);
-  const content = useContents();
+  const { contents, refresh } = useContents();
+
+  useEffect(() => {
+    refresh();
+  }, [openModal]);
+
   return (
     <>
       <div>
         <Sidebar />
       </div>
       <div className="bg-gray-100 h-screen">
-        <div className="ml-62 p-15">
+        <div className="ml-55 p-15">
           <CreateContextModal
             title="add content"
             open={openModal}
@@ -39,8 +44,8 @@ export function Dashboard() {
               startIcon={<ShareIcon />}
             />
           </div>
-          <div className="pt-4 gap-4 grid grid-cols-4">
-            {content.map(({ title, type, link }) => (
+          <div className="pt-4 gap-3 flex flex-wrap">
+            {contents.map(({ title, type, link }) => (
               <Card title={title} link={link} type={type} />
             ))}
           </div>
