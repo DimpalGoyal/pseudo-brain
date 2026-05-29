@@ -9,10 +9,11 @@ import { useContents } from "../hooks/useContents";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UserModal } from "../components/UserModal";
 
 export function Dashboard() {
   const [openModal, setOpenModal] = useState(false);
-  const { contents, refresh } = useContents();
+  const { contents, refresh, name} = useContents();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export function Dashboard() {
               setOpenModal(false);
             }}
           />
-          <div className="flex gap-2 justify-end">
+          <div className="flex gap-2 justify-end mr-5">
             <Button
               variant="primary"
               text="add content"
@@ -74,6 +75,7 @@ export function Dashboard() {
                 alert(shareUrl);
               }}
             />
+            <UserModal name={name[0]}/>
           </div>
           <div className="pt-4 gap-3 flex flex-wrap">
             {contents.map(({ title, type, link }) => (

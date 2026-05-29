@@ -4,6 +4,7 @@ import { BACKEND_URL } from "../config";
 
 export function useContents() {
   const [contents, setContents] = useState([]);
+  const [name, setName] = useState('')
   function refresh() {
     axios
       .get(`${BACKEND_URL}/content`, {
@@ -11,7 +12,9 @@ export function useContents() {
           Authorization: localStorage.getItem("token"),
         },
       })
-      .then((res) => setContents(res.data.content));
+      .then((res) => {setContents(res.data.content)
+        setName(res.data.content[0].userId.username)
+      });
   }
 
   useEffect(() => {
@@ -24,5 +27,5 @@ export function useContents() {
       clearInterval(interval);
     };
   }, []);
-  return { contents, refresh };
+  return { contents, refresh, name };
 }
