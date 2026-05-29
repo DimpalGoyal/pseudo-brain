@@ -8,14 +8,28 @@ import { Sidebar } from "../components/sidebar";
 import { useContents } from "../hooks/useContents";
 import { BACKEND_URL } from "../config";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export function Dashboard() {
   const [openModal, setOpenModal] = useState(false);
   const { contents, refresh } = useContents();
+  const navigate = useNavigate();
 
   useEffect(() => {
     refresh();
   }, [openModal]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const timer = setTimeout(() => {
+
+      if (!token) {
+        navigate("/signup");
+      }
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
@@ -44,16 +58,20 @@ export function Dashboard() {
               variant="secondary"
               text="share"
               startIcon={<ShareIcon />}
-              onClick={async()=>{
-                const res = await axios.post(`${BACKEND_URL}/brain/share`,{
-                  share: true
-                }, {
-                  headers: {
-                    'Authorization': localStorage.getItem('token')
-                  }
-                })
-                const shareUrl = `localhost:5173/share/${res.data.hash}`
-                alert(shareUrl)
+              onClick={async () => {
+                const res = await axios.post(
+                  `${BACKEND_URL}/brain/share`,
+                  {
+                    share: true,
+                  },
+                  {
+                    headers: {
+                      Authorization: localStorage.getItem("token"),
+                    },
+                  },
+                );
+                const shareUrl = `localhost:5173/share/${res.data.hash}`;
+                alert(shareUrl);
               }}
             />
           </div>
