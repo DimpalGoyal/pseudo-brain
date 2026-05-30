@@ -15,6 +15,9 @@ interface modalProps {
 enum ContentType {
   Youtube = "youtube",
   Twitter = "twitter",
+  Note = "note",
+  Web = "web"
+  
 }
 
 export function CreateContextModal({ title, open, onClose }: modalProps) {
@@ -60,7 +63,10 @@ export function CreateContextModal({ title, open, onClose }: modalProps) {
               </div>
               <div className="pt-4">
                 <InputBox placeholder="title" reference={titleRef} />
+                {type === ContentType.Note ? <InputBox placeholder="note" reference={linkRef}/>:
+                
                 <InputBox placeholder="link" reference={linkRef} />
+                }
               </div>
               <div className="mx-3 py-2 gap-2 grid grid-cols-2">
                 <Button
@@ -76,6 +82,20 @@ export function CreateContextModal({ title, open, onClose }: modalProps) {
                     type === ContentType.Twitter ? "primary" : "secondary"
                   }
                   onClick={() => setType(ContentType.Twitter)}
+                />
+                <Button
+                  text="note"
+                  variant={
+                    type === ContentType.Note? "primary" : "secondary"
+                  }
+                  onClick={() => setType(ContentType.Note)}
+                />
+                <Button
+                  text="web"
+                  variant={
+                    type === ContentType.Web? "primary" : "secondary"
+                  }
+                  onClick={() => setType(ContentType.Web)}
                 />
               </div>
               <div className="flex justify-center pt-4">

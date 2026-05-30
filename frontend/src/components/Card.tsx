@@ -1,9 +1,12 @@
+import { BinIcon } from "../icons/BinIcon";
 import { ShareIcon } from "../icons/PlusIcon";
+import { TwitterIcon } from "../icons/TwitterIon";
+import { YoutubeIcon } from "../icons/YoutubeIcon";
 
 interface cardProps {
   title: string;
   link: string;
-  type: "youtube" | "twitter";
+  type: "youtube" | "twitter" | "note" | "web";
 }
 
 export function Card({ title, link, type }: cardProps) {
@@ -13,13 +16,13 @@ export function Card({ title, link, type }: cardProps) {
         <div className="flex items-center justify-between ">
           <div className="flex items-center">
             <div className="pr-2">
-              <ShareIcon />
+              {type == "youtube"? <YoutubeIcon/> : <TwitterIcon/>}
             </div>
             <span className="text-xl font-semibold">{title}</span>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 justify-center items-center">
             <ShareIcon />
-            <ShareIcon />
+            <BinIcon/>
           </div>
         </div>
         <div className="pt-4 flex justify-center items-center">
@@ -42,6 +45,11 @@ export function Card({ title, link, type }: cardProps) {
                 async
                 src="https://platform.twitter.com/widgets.js"
               ></script>
+            </div>
+          )}
+          {type === "note" && (
+            <div className="w-60 flex justify-start ml-2 flex-wrap mt-1">
+              <div>{link}</div>
             </div>
           )}
         </div>
