@@ -1,5 +1,7 @@
 import { BinIcon } from "../icons/BinIcon";
+import { NoteIcon } from "../icons/NoteIcon";
 import { ShareIcon } from "../icons/PlusIcon";
+import { WebIcon } from "../icons/WebIcon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 
 interface cardProps {
@@ -15,15 +17,15 @@ export function Card({ title, link, type }: cardProps) {
         <div className="flex items-center justify-between ">
           <div className="flex items-center">
             <div className="pr-2 ">
-              {type == "youtube" && <YoutubeIcon/>}
-              {type == "note" && <BinIcon/>}
-              {type == "web" && <BinIcon/>}
+              {type == "youtube" && <YoutubeIcon />}
+              {type == "note" && <NoteIcon />}
+              {type == "web" && <WebIcon />}
             </div>
             <span className="text-xl font-semibold">{title}</span>
           </div>
           <div className="flex gap-2 justify-center items-center">
             <ShareIcon />
-            <BinIcon/>
+            <BinIcon />
           </div>
         </div>
         <div className="pt-4 flex justify-center items-center">
@@ -40,6 +42,18 @@ export function Card({ title, link, type }: cardProps) {
           {type === "note" && (
             <div className="flex justify-start ml-2 w-64 flex-wrap mt-1">
               <div>{link}</div>
+            </div>
+          )}
+          {type === "web" && (
+            <div className="flex justify-start ml-2 w-64 flex-wrap mt-1">
+              <a
+                href={link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-blue-800 duration-150"
+              >
+                {link.split("/").pop()?.replaceAll("-", " ")}
+              </a>
             </div>
           )}
         </div>
