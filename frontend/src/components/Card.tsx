@@ -1,12 +1,11 @@
 import { BinIcon } from "../icons/BinIcon";
 import { ShareIcon } from "../icons/PlusIcon";
-import { TwitterIcon } from "../icons/TwitterIon";
 import { YoutubeIcon } from "../icons/YoutubeIcon";
 
 interface cardProps {
   title: string;
   link: string;
-  type: "youtube" | "twitter" | "note" | "web";
+  type: "youtube" | "note" | "web";
 }
 
 export function Card({ title, link, type }: cardProps) {
@@ -15,8 +14,10 @@ export function Card({ title, link, type }: cardProps) {
       <div className="p-6 border  shadow-md max-w-70 rounded-md bg-white">
         <div className="flex items-center justify-between ">
           <div className="flex items-center">
-            <div className="pr-2">
-              {type == "youtube"? <YoutubeIcon/> : <TwitterIcon/>}
+            <div className="pr-2 ">
+              {type == "youtube" && <YoutubeIcon/>}
+              {type == "note" && <BinIcon/>}
+              {type == "web" && <BinIcon/>}
             </div>
             <span className="text-xl font-semibold">{title}</span>
           </div>
@@ -36,19 +37,8 @@ export function Card({ title, link, type }: cardProps) {
               referrerPolicy="strict-origin-when-cross-origin"
             ></iframe>
           )}
-          {type === "twitter" && (
-            <div className="w-full rounded-md items-center justify-center">
-              <blockquote className="twitter-tweet">
-                <a href={link.replace("x.com", "twitter.com")}></a>
-              </blockquote>
-              <script
-                async
-                src="https://platform.twitter.com/widgets.js"
-              ></script>
-            </div>
-          )}
           {type === "note" && (
-            <div className="w-60 flex justify-start ml-2 flex-wrap mt-1">
+            <div className="flex justify-start ml-2 w-64 flex-wrap mt-1">
               <div>{link}</div>
             </div>
           )}

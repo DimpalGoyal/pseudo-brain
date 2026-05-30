@@ -14,10 +14,8 @@ interface modalProps {
 
 enum ContentType {
   Youtube = "youtube",
-  Twitter = "twitter",
   Note = "note",
-  Web = "web"
-  
+  Web = "web",
 }
 
 export function CreateContextModal({ title, open, onClose }: modalProps) {
@@ -43,7 +41,7 @@ export function CreateContextModal({ title, open, onClose }: modalProps) {
         },
       },
     );
-    onClose()
+    onClose();
   }
 
   return (
@@ -52,8 +50,8 @@ export function CreateContextModal({ title, open, onClose }: modalProps) {
         <div className="w-screen flex justify-center h-screen top-0 left-0 fixed bg-slate-500/60 ">
           <div className=" justify-center flex-col flex">
             <span className="opacity-100 bg-white p-10 rounded-2xl">
-              <div className="flex justify-between opacity-100">
-                <div className="font-semibold text-xl">{title}</div>
+              <div className="flex justify-between opacity-100 mx-2">
+                <div className="font-semibold text-2xl">{title}</div>
                 <div
                   className="cursor-pointer flex justify-end"
                   onClick={onClose}
@@ -61,14 +59,15 @@ export function CreateContextModal({ title, open, onClose }: modalProps) {
                   <CrossIcon />
                 </div>
               </div>
-              <div className="pt-4">
+              <div className="pt-4 ">
                 <InputBox placeholder="title" reference={titleRef} />
-                {type === ContentType.Note ? <InputBox placeholder="note" reference={linkRef}/>:
-                
-                <InputBox placeholder="link" reference={linkRef} />
-                }
+                {type === ContentType.Note ? (
+                  <InputBox placeholder="note" reference={linkRef} />
+                ) : (
+                  <InputBox placeholder="link" reference={linkRef} />
+                )}
               </div>
-              <div className="mx-3 py-2 gap-2 grid grid-cols-2">
+              <div className="mx-3 py-2 gap-2 grid grid-cols-3">
                 <Button
                   text="youtube"
                   variant={
@@ -77,25 +76,14 @@ export function CreateContextModal({ title, open, onClose }: modalProps) {
                   onClick={() => setType(ContentType.Youtube)}
                 />
                 <Button
-                  text="twitter"
-                  variant={
-                    type === ContentType.Twitter ? "primary" : "secondary"
-                  }
-                  onClick={() => setType(ContentType.Twitter)}
+                  text="web"
+                  variant={type === ContentType.Web ? "primary" : "secondary"}
+                  onClick={() => setType(ContentType.Web)}
                 />
                 <Button
                   text="note"
-                  variant={
-                    type === ContentType.Note? "primary" : "secondary"
-                  }
+                  variant={type === ContentType.Note ? "primary" : "secondary"}
                   onClick={() => setType(ContentType.Note)}
-                />
-                <Button
-                  text="web"
-                  variant={
-                    type === ContentType.Web? "primary" : "secondary"
-                  }
-                  onClick={() => setType(ContentType.Web)}
                 />
               </div>
               <div className="flex justify-center pt-4">
