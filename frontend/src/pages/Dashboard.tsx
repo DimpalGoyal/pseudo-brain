@@ -13,7 +13,7 @@ import { UserModal } from "../components/UserModal";
 
 export function Dashboard() {
   const [openModal, setOpenModal] = useState(false);
-  const { contents, refresh, name} = useContents();
+  const { contents, refresh, name } = useContents();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +23,6 @@ export function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const timer = setTimeout(() => {
-
       if (!token) {
         navigate("/signup");
       }
@@ -35,7 +34,7 @@ export function Dashboard() {
   return (
     <>
       <div>
-        <Sidebar />
+        <Sidebar onClick={() => {}} />
       </div>
       <div className="bg-gray-100 h-screen">
         <div className="ml-55 p-15">
@@ -75,11 +74,26 @@ export function Dashboard() {
                 alert(shareUrl);
               }}
             />
-            <UserModal name={name[0]}/>
+            <UserModal name={name[0]} />
           </div>
           <div className="pt-4 gap-3 flex flex-wrap">
-            {contents.map(({ title, type, link }) => (
-              <Card title={title} link={link} type={type} />
+            {contents.map(({ _id, title, type, link }) => (
+              <div key={_id}>
+                <Card
+                  title={title}
+                  link={link}
+                  type={type}
+                  onClick={() => {
+                    axios.delete(`${BACKEND_URL}/content`, {
+                      data: { contentId: _id },
+                      headers: {
+                        Authorization: localStorage.getItem("token"),
+                      },
+                    });
+                    refresh();
+                  }}
+                />
+              </div>
             ))}
           </div>
         </div>

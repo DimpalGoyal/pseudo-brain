@@ -8,9 +8,10 @@ interface cardProps {
   title: string;
   link: string;
   type: "youtube" | "note" | "web";
+  onClick: ()=> void
 }
 
-export function Card({ title, link, type }: cardProps) {
+export function Card({ title, link, type, onClick }: cardProps) {
   return (
     <div>
       <div className="p-6 border  shadow-md max-w-70 rounded-md bg-white">
@@ -23,9 +24,11 @@ export function Card({ title, link, type }: cardProps) {
             </div>
             <span className="text-xl font-semibold">{title}</span>
           </div>
-          <div className="flex gap-2 justify-center items-center">
+          <div className="flex gap-2 justify-center items-center" onClick={onClick}>
             <ShareIcon />
+            <div className="cursor-pointer hover:bg-slate-200 p-1 rounded-full duration-200">
             <BinIcon />
+            </div>
           </div>
         </div>
         <div className="pt-4 flex justify-center items-center">
