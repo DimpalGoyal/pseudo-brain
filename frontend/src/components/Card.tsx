@@ -8,7 +8,7 @@ interface cardProps {
   title: string;
   link: string;
   type: "youtube" | "note" | "web";
-  onClick: ()=> void
+  onClick?: ()=> void
 }
 
 export function Card({ title, link, type, onClick }: cardProps) {

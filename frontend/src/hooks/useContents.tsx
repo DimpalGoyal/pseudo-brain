@@ -5,7 +5,10 @@ import { BACKEND_URL } from "../config";
 export function useContents() {
   const [contents, setContents] = useState([]);
   const [name, setName] = useState('')
-  const [contentId, setContentId] = useState('')
+  const [note, setNote] = useState([])
+  const [web, setWeb] = useState([])
+  const [youtube, setYoutube] = useState([])
+  
   function refresh() {
     axios
       .get(`${BACKEND_URL}/content`, {
@@ -15,7 +18,9 @@ export function useContents() {
       })
       .then((res) => {setContents(res.data.content)
         setName(res.data.content[0].userId.username)
-        setContentId(res.data)
+        setNote(res.data.content.filter(c => c.type == 'note'))
+        setWeb(res.data.content.filter(c => c.type == 'web'))
+        setYoutube(res.data.content.filter(c => c.type == 'youtube'))
       });
   }
 
@@ -30,5 +35,5 @@ export function useContents() {
       clearInterval(interval);
     };
   }, []);
-  return { contents, refresh, name, contentId };
+  return { contents, refresh, name,note,web, youtube};
 }
