@@ -8,8 +8,8 @@ interface buttonProps {
 }
 
 const variantClasses = {
-    "primary": "bg-purple-700 text-white",
-    "secondary": "bg-purple-200 text-purple-800"
+    "primary": "bg-purple-700 text-white hover:bg-purple-800 duration-150",
+    "secondary": "bg-purple-200 text-purple-800 hover:bg-purple-300 text-purple-900 duration-150"
 }
 
 const defaultStyles = " px-4 py-2 flex rounded-md cursor-pointer items-center justify-center"

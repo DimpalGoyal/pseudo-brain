@@ -1,3 +1,4 @@
+import { HomeIcon } from "../icons/HomeIcon";
 import { Logo } from "../icons/Logo";
 import { NoteIcon } from "../icons/NoteIcon";
 import { WebIcon } from "../icons/WebIcon";
@@ -27,9 +28,9 @@ export function Sidebar({
       </div>
       <div className="pt-8">
         <div onClick={home}>
-          <SidebarItem text="home" icon={<YoutubeIcon />} />
+          <SidebarItem text="home" icon={<HomeIcon/>} />
         </div>
-        <div onClick={youtubeBtn}>
+        <div onClick={youtubeBtn} >
           <SidebarItem text="YouTube" icon={<YoutubeIcon />} />
         </div>
         <div onClick={noteFilter}>
